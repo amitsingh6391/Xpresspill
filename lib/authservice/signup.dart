@@ -1,5 +1,6 @@
 import 'package:Xpresspill/authservice/auth.dart';
 import 'package:Xpresspill/authservice/login.dart';
+import 'package:Xpresspill/constant.dart';
 import 'package:Xpresspill/main.dart';
 import 'package:Xpresspill/pages/homepgae.dart';
 import 'package:Xpresspill/pages/reachus.dart';
@@ -44,6 +45,7 @@ class _SignuppageState extends State<Signuppage> {
           .signupWithEmail(email.text, password.text)
           .then((value) async {
         if (value != null) {
+          print("value hii -------> $value");
           getCurrentUser();
         } else {
           showMessage();
@@ -67,14 +69,15 @@ class _SignuppageState extends State<Signuppage> {
 
   addnewuserprofile() async {
     await FirebaseFirestore.instance.collection("users").doc(userid).set({
-      "FirstName": firstname.text,
-      "LastName": lastname.text,
-      "Email": email.text,
-      "PhoneNumber": phone.text,
-      "Dob": dob,
-      'CreatedAt': DateTime.now().millisecondsSinceEpoch,
+      "firstName": firstname.text,
+      "lastName": lastname.text,
+      "email": email.text,
+      "contactNumber": phone.text,
+      "dob": dob,
+      'createdAt': DateTime.now().millisecondsSinceEpoch,
       "isPharmacist": false,
-      "isAdmin": false
+      "isAdmin": false,
+      "id": userid
     });
 
     // Navigator.pushReplacement(
@@ -142,7 +145,8 @@ class _SignuppageState extends State<Signuppage> {
             child: AppBar(
                 automaticallyImplyLeading: false,
                 flexibleSpace: Container(
-                  color: Color(0xFF000000),
+                  // color: Color(0xFF000000),
+                  color: primaryColor,
                   child: Column(children: [
                     EasyRichText("Xpress Pill ",
                         patternList: [
@@ -270,7 +274,8 @@ class _SignuppageState extends State<Signuppage> {
                 child: Column(children: [
                 width > 400
                     ? Container(
-                        color: Color(0xFA0F0D11),
+                        //color: Color(0xFA0F0D11),
+                        color: primaryColor,
                         child: Column(
                           children: [
                             Padding(
@@ -284,7 +289,7 @@ class _SignuppageState extends State<Signuppage> {
                                       child: Text("Sign UP",
                                           style: TextStyle(
                                               fontSize: 30,
-                                              color: Colors.white,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.bold)),
                                     ),
                                     Container(
@@ -338,7 +343,7 @@ class _SignuppageState extends State<Signuppage> {
                                       child: Text(
                                         "Select your DOB",
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                            color: Colors.black, fontSize: 20),
                                       ),
                                     ),
                                     Padding(
@@ -461,7 +466,8 @@ class _SignuppageState extends State<Signuppage> {
                                   ])),
                             ),
                             Container(
-                              color: Colors.black,
+                              // color: Colors.black,
+                              color: primaryColor,
                               width: size.width * 1,
                               height: size.height * 0.2,
                             )

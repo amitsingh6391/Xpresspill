@@ -1,11 +1,13 @@
 import 'dart:html';
 
 import 'package:Xpresspill/authservice/auth.dart';
+import 'package:Xpresspill/constant.dart';
 import 'package:Xpresspill/main.dart';
 import 'package:Xpresspill/pages/homepgae.dart';
 import 'package:Xpresspill/pages/reachus.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:Xpresspill/pages/Adminpages/manageproducts.dart';
 
 import "package:Xpresspill/authservice/signup.dart";
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,13 +41,16 @@ class _LoginpageState extends State<Loginpage> {
           isLoading = false;
           print("yes");
         });
-        showMessage();
+      
+       showMessage();
+
+      
       } else {
         setState(() {
           isLoading = false;
           print("yes");
         });
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Homepage()));
       }
     } else {
@@ -85,14 +90,16 @@ class _LoginpageState extends State<Loginpage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        backgroundColor: Color(0xFF000000),
+        // backgroundColor: Color(0xFF000000),
+        backgroundColor: primaryColor,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(size.height *
                 0.27), //here we define our app bar inside app bar we have  row
             child: AppBar(
                 automaticallyImplyLeading: false,
                 flexibleSpace: Container(
-                  color: Color(0xFF000000),
+                  // color: Color(0xFF000000),
+                  color: primaryColor,
                   child: Column(children: [
                     EasyRichText("Xpress Pill ",
                         patternList: [
@@ -225,7 +232,8 @@ class _LoginpageState extends State<Loginpage> {
                         child: Column(
                           children: [
                             Container(
-                              color: Color(0xFA0F0D11),
+                              //color: Color(0xFA0F0D11),
+                              color: primaryColor,
                               child: Form(
                                 key: formKey,
                                 child: Column(children: [
@@ -234,7 +242,7 @@ class _LoginpageState extends State<Loginpage> {
                                     child: Text("Login",
                                         style: TextStyle(
                                             fontSize: 30,
-                                            color: Colors.white,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold)),
                                   ),
                                   SizedBox(height: size.height * 0.03),

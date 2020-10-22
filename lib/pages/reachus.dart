@@ -1,3 +1,4 @@
+import 'package:Xpresspill/constant.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,8 @@ class Reachus extends StatelessWidget {
             child: AppBar(
                 automaticallyImplyLeading: false,
                 flexibleSpace: Container(
-                  color: Color(0xFF000000),
+                  // color: Color(0xFF000000),
+                  color: primaryColor,
                   child: Column(children: [
                     EasyRichText("Xpress Pill ",
                         patternList: [
@@ -144,7 +146,11 @@ class Reachus extends StatelessWidget {
                     children: [
                       Container(
                         width: size.width * 1,
-                        decoration: BoxDecoration(color: Color(0x363A3A3B)),
+                        decoration: BoxDecoration(
+                          // color: Color(0x363A3A3B)
+                          // color: primaryColor,
+                          color: Colors.white,
+                        ),
                         child: Center(
                             child: Column(children: [
                           EasyRichText("LET US HELP YOU ! ",
@@ -152,7 +158,7 @@ class Reachus extends StatelessWidget {
                                 EasyRichTextPattern(
                                   targetString: 'HELP',
                                   style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 35),
                                 ),
@@ -182,7 +188,10 @@ class Reachus extends StatelessWidget {
                       Container(
                           height: size.height * 0.8,
                           width: size.width * 1,
-                          decoration: BoxDecoration(color: Colors.black),
+                          decoration: BoxDecoration(
+                            // color: Colors.black
+                            color: primaryColor,
+                          ),
                           child: Column(children: [
                             EasyRichText("Contact  Us ",
                                 patternList: [
@@ -190,7 +199,7 @@ class Reachus extends StatelessWidget {
                                     targetString: 'Us',
                                     //  stringBeforeTarget: 'Of',
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.red,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 35),
                                   ),
@@ -198,7 +207,7 @@ class Reachus extends StatelessWidget {
                                 defaultStyle: TextStyle(
                                     fontSize: 35,
                                     height: 2.5,
-                                    color: Colors.white)),
+                                    color: Colors.black)),
                             Row(children: [
                               //inside row we are define our appname
 
@@ -229,25 +238,25 @@ class Reachus extends StatelessWidget {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text("     3530 Sohmon Pkwy  ",
                                         style: TextStyle(
-                                            fontSize: 15, color: Colors.white)),
+                                            fontSize: 15, color: Colors.black)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text("Brock District, Thorold",
                                         style: TextStyle(
-                                            fontSize: 15, color: Colors.white)),
+                                            fontSize: 15, color: Colors.black)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text("   Niagara Region , ON  ",
                                         style: TextStyle(
-                                            fontSize: 15, color: Colors.white)),
+                                            fontSize: 15, color: Colors.black)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text("       L2V  4Y6",
                                         style: TextStyle(
-                                            fontSize: 15, color: Colors.white)),
+                                            fontSize: 15, color: Colors.black)),
                                   ),
                                 ])),
                               ),
@@ -256,19 +265,19 @@ class Reachus extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(" CALL US TODAY",
                                   style: TextStyle(
-                                      fontSize: 25, color: Colors.white)),
+                                      fontSize: 25, color: Colors.black)),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(" 905-209-999 ",
                                   style: TextStyle(
-                                      fontSize: 15, color: Colors.white)),
+                                      fontSize: 15, color: Colors.black)),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(" 1866-966-866",
                                   style: TextStyle(
-                                      fontSize: 15, color: Colors.white)),
+                                      fontSize: 15, color: Colors.black)),
                             ),
                             Container(
                               alignment: Alignment.bottomCenter,
@@ -276,7 +285,7 @@ class Reachus extends StatelessWidget {
                                 padding: const EdgeInsets.all(18.0),
                                 child: Text(" ©Xpresspill.ca",
                                     style: TextStyle(
-                                        fontSize: 15, color: Colors.white)),
+                                        fontSize: 15, color: Colors.black)),
                               ),
                             ),
                           ]))
