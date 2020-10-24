@@ -149,7 +149,8 @@ class _ManageproductState extends State<Manageproduct> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     snapshot.data.documents[index]
-                                        .data()["productPrice"],
+                                        .data()["productPrice"]
+                                        .toString(),
                                     style: secondtextstyle,
                                     textAlign: TextAlign.left,
                                   ),
@@ -168,7 +169,8 @@ class _ManageproductState extends State<Manageproduct> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                       snapshot.data.documents[index]
-                                          .data()["productQuantity"],
+                                          .data()["productQuantity"]
+                                          .toString(),
                                       style: secondtextstyle),
                                 )
                               ]),

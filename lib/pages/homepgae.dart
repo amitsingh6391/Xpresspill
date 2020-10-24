@@ -2,9 +2,13 @@ import 'package:Xpresspill/authservice/auth.dart';
 import 'package:Xpresspill/constant.dart';
 import 'package:Xpresspill/firebaseserices/database.dart';
 import 'package:Xpresspill/pages/Adminpages/manageusers.dart';
+import 'package:Xpresspill/pages/addprescrption.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
+import "package:Xpresspill/main.dart";
+
+String userid;
 
 class Homepage extends StatefulWidget {
   @override
@@ -12,9 +16,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-
-   String userid;
-   
   @override
   void initState() {
     getCurrentUser();
@@ -26,11 +27,7 @@ class _HomepageState extends State<Homepage> {
   IconData y = Icons.question_answer;
   IconData z = Icons.shopping_basket_outlined;
 
- 
-
   getCurrentUser() async {
-    
-
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
     User user = FirebaseAuth.instance.currentUser;
@@ -40,10 +37,7 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       userid = uid.toString();
     });
-
-   
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +46,19 @@ class _HomepageState extends State<Homepage> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(size.height * 0.12),
           child: AppBar(
+            leading:Text(""),
             title: Text("DashBoard", style: whitetextstyle),
             backgroundColor: primaryColor,
             centerTitle: true,
             actions: [
               IconButton(
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.home),
                 onPressed: () {
-                  // AuthProvider.logOut(context);
+                //AuthProvider.logOut(context);
+                 Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyHomePage()));
                 },
               )
             ],
@@ -123,9 +122,11 @@ Container MyContainer(String branch, context, IconData m) {
         ]),
     child: GestureDetector(
       onTap: () {
-        if (branch == "Computer science") {
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (context) => Homepage()));
+        if (branch == "Upload a Prescription") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Addprescrption(userid: userid)));
         } else if (branch == "Civil") {
           // Navigator.push(
           //     context, MaterialPageRoute(builder: (context) => Civilyear()));

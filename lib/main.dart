@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:Xpresspill/pages/Adminpages/manageproducts.dart';
 import 'package:Xpresspill/pages/Adminpages/manageusers.dart';
 import 'package:Xpresspill/pages/homepgae.dart';
+import 'package:Xpresspill/pages/pharmacistpage/allprescrptionpage.dart';
 import 'package:Xpresspill/pages/reachus.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +16,16 @@ import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:Xpresspill/constant.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 //https://pillway.com/home
 //https://wwww.pocketpills.com
 //https://medly.com/en-us
+
+var logedin;
+var isPharmacist;
+var isAdmin;
 
 void main() {
   runApp(MyApp());
@@ -45,36 +53,78 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    getusertype();
+
+    super.initState();
+  }
+
+  var loguserid;
+
+  getusertype() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      loguserid = preferences.getString('logedin');
+    });
+  }
+
   final _scrollController = ScrollController();
   FirebaseAuth auth = FirebaseAuth.instance;
   bool chekauth = false;
-  checkUserAuth() async {
-    setState(() {
-      chekauth = true;
-    });
-    try {
-      User user = await auth.currentUser;
-      if (user != null) {
-        setState(() {
-          chekauth = true;
-        });
-        Navigator.pushReplacement(
+
+  hometransfer(bool isadmin, bool ispharma) {
+    if (isadmin != null && ispharma != null) {
+      if (isadmin) {
+        Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Homepage(),
+            builder: (context) => Manageusers(),
+          ),
+        );
+      }
+      if (ispharma) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Allprescrptionpage(),
           ),
         );
       } else {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Loginpage(),
+            builder: (context) => Homepage(),
           ),
         );
       }
-    } catch (e) {
-      print(e);
+    } else {
+      showloginmessage();
     }
+  }
+
+  showloginmessage() {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text("Error"),
+            content: Text("Please Create account first"),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: Text("Dismiss"),
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -110,23 +160,61 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(children: [
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Loginpage()));
-                          // checkUserAuth();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(" 🟡  Home",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ),
-                      ),
+                      // FlatButton(
+                      //   onPressed: () {
+                      //     // Navigator.push(
+                      //     //     context,
+                      //     //     MaterialPageRoute(
+                      //     //         builder: (context) => Loginpage()));
+                      //     // checkUserAuth();
+                      //    // hometransfer(isAdmin, isPharma);
+                      //   },
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: Text(" 🟡  Home",
+                      //         style: TextStyle(
+                      //             fontSize: 20,
+                      //             fontWeight: FontWeight.bold,
+                      //             color: Colors.white)),
+                      //   ),
+                      // ),
+
+                      loguserid != null
+                          ? StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(loguserid)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Container(
+                                      color: primaryColor,
+                                      child: Text("",
+                                          style:
+                                              TextStyle(color: Colors.black)));
+                                }
+
+                                var Profiledetail = snapshot.data;
+                                isAdmin = Profiledetail["isAdmin"];
+                                isPharmacist = Profiledetail["isPharmacist"];
+
+                                return FlatButton(
+                                  onPressed: () {
+                                    hometransfer(isAdmin, isPharmacist);
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(" 🟡  Home",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
+                                  ),
+                                );
+                              },
+                            )
+                          : Text("userlog ni hi"),
+
                       FlatButton(
                         onPressed: () {
                           Navigator.push(

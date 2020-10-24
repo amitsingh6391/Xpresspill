@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Signuppage extends StatefulWidget {
   @override
@@ -56,10 +57,12 @@ class _SignuppageState extends State<Signuppage> {
 
   getCurrentUser() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    //final UserCredential user = await _auth.currentUser();
+
     User user = FirebaseAuth.instance.currentUser;
     final uid = user.uid;
     print(uid);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('logedin', user.uid);
     setState(() {
       userid = uid.toString();
     });
@@ -102,7 +105,7 @@ class _SignuppageState extends State<Signuppage> {
               FlatButton(
                 onPressed: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Homepage()));
+                      MaterialPageRoute(builder: (context) => MyHomePage()));
                 },
                 child: Text("ok"),
               )

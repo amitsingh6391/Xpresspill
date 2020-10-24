@@ -1,16 +1,17 @@
-import 'dart:html';
+//loginpage
 
 import 'package:Xpresspill/authservice/auth.dart';
 import 'package:Xpresspill/constant.dart';
 import 'package:Xpresspill/main.dart';
-import 'package:Xpresspill/pages/homepgae.dart';
+
 import 'package:Xpresspill/pages/reachus.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:Xpresspill/pages/Adminpages/manageproducts.dart';
 
 import "package:Xpresspill/authservice/signup.dart";
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Loginpage extends StatefulWidget {
   @override
@@ -25,6 +26,18 @@ class _LoginpageState extends State<Loginpage> {
 
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
+
+  bool isAdmin, isPharmacist;
+
+  @override
+  void initState() {
+    //getusertype();
+
+    super.initState();
+
+    // Navigator.pushReplacement(
+    //     context, MaterialPageRoute(builder: (context) => MyApp()));
+  }
 
   signin() async {
     if (formKey.currentState.validate()) {
@@ -41,17 +54,20 @@ class _LoginpageState extends State<Loginpage> {
           isLoading = false;
           print("yes");
         });
-      
-       showMessage();
 
-      
+        showMessage();
       } else {
+        User user = FirebaseAuth.instance.currentUser;
+        final uid = user.uid;
+        print(uid);
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString('logedin', user.uid);
         setState(() {
           isLoading = false;
           print("yes");
         });
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Homepage()));
+            context, MaterialPageRoute(builder: (context) => MyHomePage()));
       }
     } else {
       setState(() {
@@ -316,11 +332,36 @@ class _LoginpageState extends State<Loginpage> {
                                       ),
                                     ),
                                   ]),
-                                  FlatButton(
-                                    // onPressed() {
+                                  logedin != null
+                                      ? StreamBuilder(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("users")
+                                              .doc(logedin)
+                                              .snapshots(),
+                                          builder: (context, snapshot) {
+                                            if (!snapshot.hasData) {
+                                              return Container(
+                                                  color: primaryColor,
+                                                  child: Text("",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.black)));
+                                            }
 
-                                    //   signin();
-                                    // },
+                                            var Profiledetail = snapshot.data;
+                                            isAdmin = Profiledetail["isAdmin"];
+                                            isPharmacist =
+                                                Profiledetail["isPharmacist"];
+
+                                            return Container(
+                                                color: primaryColor,
+                                                child: Text("",
+                                                    style: TextStyle(
+                                                        color: Colors.black)));
+                                          },
+                                        )
+                                      : Text(""),
+                                  FlatButton(
                                     onPressed: () {
                                       signin();
                                     },
@@ -379,7 +420,7 @@ class _LoginpageState extends State<Loginpage> {
                                   )
                                 ]),
                               ),
-                            )
+                            ),
                           ],
                         ))
                     : Container(

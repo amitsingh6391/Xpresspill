@@ -43,6 +43,7 @@ dependencies:
   
   firebase: ^7.3.2
   random_string: ^2.0.1
+  flutter_icons:
   
  
   

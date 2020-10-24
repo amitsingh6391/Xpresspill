@@ -43,6 +43,29 @@ class _AddprescrptionState extends State<Addprescrption> {
   TextEditingController price = TextEditingController();
   TextEditingController quantity = TextEditingController();
 
+  showsuccess(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text("Success"),
+            content: Text("Your prescription is successfuly added"),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Homepage()));
+                },
+                child: Text("ok"),
+              )
+            ],
+          );
+        });
+  }
+
   imagePicker() {
     setState(() {
       _isLoading = true;
@@ -95,6 +118,7 @@ class _AddprescrptionState extends State<Addprescrption> {
         "prescriptionUrl": imageUri.toString(),
         "createdAt": DateTime.now(),
         "prescriptionId": widget.userid,
+        "isDispatched": false,
         "isDelivered": false,
         "isEntered": false,
         "isLocked": true,
@@ -106,14 +130,13 @@ class _AddprescrptionState extends State<Addprescrption> {
         _isLoading = false;
       });
 
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Homepage()));
-    } else {
       showsuccess(context);
+    } else {
+      showfailed(context);
     }
   }
 
-  showsuccess(context) {
+  showfailed(context) {
     showDialog(
         context: context,
         builder: (ctx) {
@@ -121,15 +144,17 @@ class _AddprescrptionState extends State<Addprescrption> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            title: Text("Success"),
-            content: Text("Your Account is Successfully Created"),
+            title: Text("Failed"),
+            content: Text("Your prescription is not added"),
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
-                  // Navigator.pushReplacement(context,
-                  //     MaterialPageRoute(builder: (context) => Homepage()));
+                  Navigator.pop(context);
+                  setState(() {
+                    _isLoading = false;
+                  });
                 },
-                child: Text("ok"),
+                child: Text("retry"),
               )
             ],
           );
@@ -143,7 +168,7 @@ class _AddprescrptionState extends State<Addprescrption> {
         appBar: AppBar(
           backgroundColor: primaryColor,
           title: Text(
-            "Add new product",
+            "Add new prescription",
             style:
                 TextStyle(color: Colors.black, fontFamily: primaryFontFamily),
           ),
@@ -161,33 +186,45 @@ class _AddprescrptionState extends State<Addprescrption> {
                           onTap: () {
                             imagePicker();
                           },
-                          child: CircleAvatar(
-                              radius: 100, child: Text("Upload Product image")),
-                        )
+                          child: Center(
+                              child: (CircleAvatar(
+                                  radius: 200,
+                                  child: Text("Upload Product image")))))
                       : Container(
-                          height: size.height * 0.3,
-                          width: size.width * 0.8,
+                          height: size.height * 0.5,
+                          width: size.width * 0.5,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               image: DecorationImage(
-                                  image: NetworkImage(imageUri.toString()))),
+                                  image: NetworkImage(imageUri.toString()),
+                                  fit:BoxFit.fill
+                                  )
+                                  ),
                         ),
-                  FlatButton(
-                    onPressed: () async {
-                      uploadproduct(context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(14.0),
+                  Column(children: [
+                    Text(
+                      "Upload prescription",
+                      style: TextStyle(
+                          color: Colors.black, fontFamily: primaryFontFamily),
+                    ),
+                    FlatButton(
+                      onPressed: () async {
+                        uploadproduct(context);
+                      },
                       child: Padding(
-                        padding: const EdgeInsets.all(28.0),
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.green,
-                          child: Icon(Icons.cloud_upload, color: Colors.black),
+                        padding: const EdgeInsets.all(14.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(28.0),
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.green,
+                            child:
+                                Icon(Icons.cloud_upload, color: Colors.black),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ])
                 ],
               )));
   }

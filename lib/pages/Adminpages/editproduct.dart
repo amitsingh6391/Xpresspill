@@ -75,15 +75,16 @@ class _EditproductState extends State<Editproduct> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            title: Text("Success"),
-            content: Text("Your Account is Successfully Created"),
+            title: Text("Failed"),
+            content: Text("Please write valid details"),
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
                   // Navigator.pushReplacement(context,
                   //     MaterialPageRoute(builder: (context) => Homepage()));
+                  Navigator.pop(context);
                 },
-                child: Text("ok"),
+                child: Text("rettry"),
               )
             ],
           );
