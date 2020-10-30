@@ -59,7 +59,7 @@ class _PrescriptionResultState extends State<PrescriptionResult> {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(10.0),
-      height:size.height*0.7,
+      height:size.height*0.75,
       child: Card(
         child: Column(
           children: <Widget>[

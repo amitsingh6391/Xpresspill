@@ -213,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 );
                               },
                             )
-                          : Text("userlog ni hi"),
+                          : Text(""),
 
                       FlatButton(
                         onPressed: () {
